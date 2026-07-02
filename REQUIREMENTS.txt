@@ -1,0 +1,159 @@
+# Ray Chad IRC Server - System Requirements
+
+## Minimum System Requirements
+
+- **OS**: Linux (Ubuntu 20.04+, Debian 11+), macOS 10.15+, or Windows (WSL2)
+- **RAM**: 512 MB
+- **Disk**: 100 MB free space
+- **CPU**: Single core (1+ recommended)
+
+## Build Dependencies
+
+### Ubuntu/Debian
+```bash
+build-essential
+autoconf
+automake
+libssl-dev
+openssl
+pkg-config
+git
+gcc (4.4+)
+g++ (4.4+)
+make
+```
+
+### macOS
+```bash
+Xcode Command Line Tools
+brew install openssl autoconf automake
+```
+
+### RHEL/CentOS/Fedora
+```bash
+gcc
+gcc-c++
+make
+openssl-devel
+autoconf
+automake
+git
+```
+
+## Runtime Dependencies
+
+- **OpenSSL** or **GnuTLS** (for SSL/TLS support)
+- **zlib** (optional, for compression)
+- **MySQL/PostgreSQL** (optional, for user database)
+
+## Optional Modules & Dependencies
+
+| Module | Purpose | Dependency |
+|--------|---------|-----------|
+| m_ssl_gnutls.so | SSL/TLS encryption | GnuTLS |
+| m_ssl_openssl.so | SSL/TLS encryption | OpenSSL |
+| m_mysql.so | MySQL backend | MySQL client libs |
+| m_pgsql.so | PostgreSQL backend | PostgreSQL client libs |
+| m_regex_pcre.so | PCRE regex support | PCRE library |
+| m_syslog.so | System logging | syslog |
+
+## Download Requirements
+
+- **InspIRCd Source**: ~100 MB
+- **Ray Chad Config**: ~10 KB
+
+## Network Requirements
+
+- **Outbound**: Optional (for server linking, IRC services)
+- **Inbound**: 
+  - Port 6667 (IRC - unencrypted)
+  - Port 6697 (IRC over SSL/TLS)
+  - Port 7000 (Server linking)
+
+## Optional: Docker Setup
+
+- **Docker**: 20.10+ (any OS with Docker support)
+- **Docker Image**: ~500 MB compressed
+
+## Installation Commands by OS
+
+### Ubuntu/Debian
+```bash
+sudo apt-get update
+sudo apt-get install -y build-essential autoconf automake openssl libssl-dev git pkg-config
+```
+
+### macOS
+```bash
+brew install openssl autoconf automake
+xcode-select --install  # If needed
+```
+
+### CentOS/RHEL/Fedora
+```bash
+sudo yum groupinstall -y "Development Tools"
+sudo yum install -y openssl-devel autoconf automake git
+```
+
+### Fedora 35+
+```bash
+sudo dnf groupinstall -y "Development Tools"
+sudo dnf install -y openssl-devel autoconf automake git
+```
+
+## Quick Dependency Check
+
+```bash
+# Check GCC version
+gcc --version
+
+# Check OpenSSL
+openssl version
+
+# Check make
+make --version
+
+# Check git
+git --version
+```
+
+## Performance Tuning
+
+For production servers, consider:
+- **RAM**: 2+ GB for 500+ concurrent users
+- **CPU**: 2+ cores recommended
+- **Network**: Gigabit connection recommended
+- **Storage**: SSD for better performance
+
+## Browser Client Requirements
+
+For web-based IRC clients:
+- Chrome 60+
+- Firefox 55+
+- Safari 12+
+- Edge 79+
+
+## Firewall Configuration
+
+Allow these ports through firewall:
+
+```bash
+# UFW (Ubuntu)
+sudo ufw allow 6667/tcp
+sudo ufw allow 6697/tcp
+sudo ufw allow 7000/tcp
+
+# iptables
+sudo iptables -A INPUT -p tcp --dport 6667 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 6697 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 7000 -j ACCEPT
+```
+
+## Notes
+
+- All build tools must support C++11 or later
+- OpenSSL 1.0.2+ or GnuTLS 3.2+ required
+- Admin user must have `sudo` access for installation
+- Non-root user recommended for running the server
+
+For detailed setup instructions, see **GETTING_STARTED.md**
