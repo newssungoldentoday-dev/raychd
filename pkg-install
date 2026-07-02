@@ -1,0 +1,163 @@
+#!/bin/bash
+
+# Ray Chad IRC Server - Installation Script
+# This script automates the installation of Ray Chad and InspIRCd
+
+set -e
+
+echo "=========================================="
+echo "  Ray Chad IRC Server - Installation"
+echo "=========================================="
+echo ""
+
+# Color codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Check if running with proper permissions
+if [[ $EUID -ne 0 ]]; then
+   echo -e "${RED}This script must be run as root (use sudo)${NC}"
+   exit 1
+fi
+
+# Detect OS
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    if [ -f /etc/debian_version ]; then
+        OS="debian"
+        PM="apt-get"
+    elif [ -f /etc/redhat-release ]; then
+        OS="redhat"
+        PM="yum"
+    else
+        echo -e "${RED}Unsupported Linux distribution${NC}"
+        exit 1
+    fi
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    OS="macos"
+else
+    echo -e "${RED}Unsupported operating system${NC}"
+    exit 1
+fi
+
+echo -e "${YELLOW}Detected OS: $OS${NC}"
+echo ""
+
+# Install dependencies
+echo -e "${GREEN}[1/5] Installing dependencies...${NC}"
+
+if [ "$OS" == "debian" ]; then
+    apt-get update
+    apt-get install -y build-essential autoconf automake openssl libssl-dev git pkg-config
+elif [ "$OS" == "redhat" ]; then
+    yum groupinstall -y "Development Tools"
+    yum install -y openssl-devel autoconf automake git
+elif [ "$OS" == "macos" ]; then
+    if ! command -v brew &> /dev/null; then
+        echo -e "${RED}Homebrew not found. Please install from https://brew.sh${NC}"
+        exit 1
+    fi
+    brew install openssl autoconf automake
+fi
+
+echo -e "${GREEN}[✓] Dependencies installed${NC}"
+echo ""
+
+# Create installation directory
+INSTALL_DIR="${INSTALL_DIR:-$HOME/raychd}"
+echo -e "${GREEN}[2/5] Setting up installation directory: $INSTALL_DIR${NC}"
+
+mkdir -p "$INSTALL_DIR"
+cd "$INSTALL_DIR"
+
+echo -e "${GREEN}[✓] Installation directory created${NC}"
+echo ""
+
+# Clone Ray Chad repository
+echo -e "${GREEN}[3/5] Cloning Ray Chad repository...${NC}"
+
+if [ -d "raychd-repo" ]; then
+    echo "Ray Chad repository already exists, updating..."
+    cd raychd-repo
+    git pull origin main
+    cd ..
+else
+    git clone https://github.com/newssungoldentoday-dev/raychd.git raychd-repo
+fi
+
+echo -e "${GREEN}[✓] Ray Chad repository ready${NC}"
+echo ""
+
+# Build InspIRCd
+echo -e "${GREEN}[4/5] Building InspIRCd...${NC}"
+
+if [ -d "inspircd" ]; then
+    echo "InspIRCd already exists, skipping build..."
+else
+    git clone https://github.com/inspircd/inspircd.git
+    cd inspircd
+    
+    echo "Configuring InspIRCd..."
+    ./configure --prefix="$INSTALL_DIR/inspircd" --enable-gnutls
+    
+    echo "Compiling InspIRCd (this may take a few minutes)..."
+    make -j$(nproc)
+    
+    echo "Installing InspIRCd..."
+    make install
+    
+    cd ..
+fi
+
+echo -e "${GREEN}[✓] InspIRCd built and installed${NC}"
+echo ""
+
+# Deploy configuration
+echo -e "${GREEN}[5/5] Deploying Ray Chad configuration...${NC}"
+
+cp raychd-repo/inspircd.conf "$INSTALL_DIR/inspircd/conf/inspircd.conf"
+
+echo -e "${GREEN}[✓] Configuration deployed${NC}"
+echo ""
+
+# Create symbolic links for easy access
+echo -e "${GREEN}Creating convenient symlinks...${NC}"
+ln -sf "$INSTALL_DIR/inspircd/bin/inspircd" /usr/local/bin/raychd-ctl
+chmod +x /usr/local/bin/raychd-ctl
+
+echo ""
+echo "=========================================="
+echo -e "${GREEN}  Installation Complete!${NC}"
+echo "=========================================="
+echo ""
+echo "Ray Chad is installed at: $INSTALL_DIR"
+echo ""
+echo "Next steps:"
+echo ""
+echo -e "${YELLOW}1. Edit configuration (IMPORTANT):${NC}"
+echo "   nano $INSTALL_DIR/inspircd/conf/inspircd.conf"
+echo "   - Change operator password"
+echo "   - Customize server name and network name"
+echo ""
+echo -e "${YELLOW}2. Start the server:${NC}"
+echo "   raychd-ctl start"
+echo ""
+echo -e "${YELLOW}3. Check server status:${NC}"
+echo "   raychd-ctl status"
+echo ""
+echo -e "${YELLOW}4. View logs:${NC}"
+echo "   tail -f $INSTALL_DIR/inspircd/data/logs/ircd.log"
+echo ""
+echo -e "${YELLOW}5. Connect with IRC client:${NC}"
+echo "   Server: localhost (or your server IP)"
+echo "   Port: 6667 (unencrypted) or 6697 (SSL/TLS)"
+echo "   Channels: #general, #dev"
+echo ""
+echo "Documentation:"
+echo "  - Quick Start: $INSTALL_DIR/raychd-repo/QUICK_START.md"
+echo "  - Full Guide: $INSTALL_DIR/raychd-repo/GETTING_STARTED.md"
+echo "  - Requirements: $INSTALL_DIR/raychd-repo/REQUIREMENTS.txt"
+echo ""
+echo -e "${GREEN}Happy chatting! 🎉${NC}"
+echo ""
