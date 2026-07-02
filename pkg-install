@@ -66,8 +66,8 @@ install_dependencies() {
     if [ "$ENV" == "termux" ]; then
         echo "Setting up Termux environment..."
         pkg update -y
-        pkg install -y build-essential git openssl autoconf automake openssl-dev
-        pkg install -y clang make pkg-config
+        pkg install -y build-essential git openssl autoconf automake openssl-dev pkg-config
+        pkg install -y clang make
         
     elif [ "$ENV" == "macos" ]; then
         if ! command -v brew &> /dev/null; then
@@ -75,7 +75,7 @@ install_dependencies() {
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi
         brew update
-        brew install autoconf automake openssl git
+        brew install autoconf automake openssl git pkg-config
         export LDFLAGS="-L/usr/local/opt/openssl/lib"
         export CPPFLAGS="-I/usr/local/opt/openssl/include"
         
@@ -86,38 +86,38 @@ install_dependencies() {
             if [ "$EUID" -ne 0 ]; then
                 echo -e "${YELLOW}This requires sudo for Debian/Ubuntu${NC}"
                 sudo apt-get update
-                sudo apt-get install -y build-essential autoconf automake openssl libssl-dev git pkg-config
+                sudo apt-get install -y build-essential autoconf automake openssl libssl-dev openssl-dev pkg-config git
             else
                 apt-get update
-                apt-get install -y build-essential autoconf automake openssl libssl-dev git pkg-config
+                apt-get install -y build-essential autoconf automake openssl libssl-dev openssl-dev pkg-config git
             fi
         elif [[ "$DISTRO" =~ ^(fedora|rhel|centos)$ ]]; then
             if [ "$EUID" -ne 0 ]; then
                 echo -e "${YELLOW}This requires sudo for RHEL/CentOS/Fedora${NC}"
                 sudo yum groupinstall -y "Development Tools"
-                sudo yum install -y openssl-devel autoconf automake git
+                sudo yum install -y openssl-devel autoconf automake git pkg-config
             else
                 yum groupinstall -y "Development Tools"
-                yum install -y openssl-devel autoconf automake git
+                yum install -y openssl-devel autoconf automake git pkg-config
             fi
         elif [ "$DISTRO" == "arch" ]; then
             if [ "$EUID" -ne 0 ]; then
                 echo -e "${YELLOW}This requires sudo for Arch Linux${NC}"
-                sudo pacman -Sy --noconfirm base-devel openssl autoconf automake git
+                sudo pacman -Sy --noconfirm base-devel openssl autoconf automake git pkg-config
             else
-                pacman -Sy --noconfirm base-devel openssl autoconf automake git
+                pacman -Sy --noconfirm base-devel openssl autoconf automake git pkg-config
             fi
         elif [ "$DISTRO" == "alpine" ]; then
             if [ "$EUID" -ne 0 ]; then
                 echo -e "${YELLOW}This requires sudo for Alpine Linux${NC}"
-                sudo apk add --no-cache build-base autoconf automake openssl-dev git
+                sudo apk add --no-cache build-base autoconf automake openssl-dev git pkg-config
             else
-                apk add --no-cache build-base autoconf automake openssl-dev git
+                apk add --no-cache build-base autoconf automake openssl-dev git pkg-config
             fi
         else
             echo -e "${YELLOW}Unknown Linux distribution. Trying apt-get...${NC}"
             sudo apt-get update
-            sudo apt-get install -y build-essential autoconf automake openssl libssl-dev git pkg-config
+            sudo apt-get install -y build-essential autoconf automake openssl libssl-dev openssl-dev pkg-config git
         fi
     fi
     
