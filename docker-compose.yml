@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  raychd:
+    build: .
+    image: raychd:latest
+    container_name: raychd-irc
+    ports:
+      - "6667:6667"    # Standard IRC port
+      - "6697:6697"    # Secure IRC port (SSL/TLS)
+      - "7000:7000"    # Server linking port
+    volumes:
+      - raychd_data:/usr/local/inspircd/data
+      - raychd_logs:/usr/local/inspircd/data/logs
+      - raychd_conf:/usr/local/inspircd/conf
+    environment:
+      - TZ=UTC
+    restart: unless-stopped
+    networks:
+      - raychd_network
+    # Optional: Set resource limits
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '1'
+    #       memory: 512M
+    #     reservations:
+    #       cpus: '0.5'
+    #       memory: 256M
+
+volumes:
+  raychd_data:
+    driver: local
+  raychd_logs:
+    driver: local
+  raychd_conf:
+    driver: local
+
+networks:
+  raychd_network:
+    driver: bridge
