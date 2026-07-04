@@ -1,3 +1,487 @@
-<DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ray Chad — IRC Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0D0D0D;
+      --card:     #141414;
+      --border:   #222;
+      --accent:   #00FF88;
+      --accent2:  #00CFFF;
+      --glow:     rgba(0,255,136,0.2);
+      --text:     #F0F0F0;
+      --muted:    #666;
+      --input-bg: #0A0A0A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-logo span { color: var(--muted); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn-nav {
+      padding: 9px 20px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .btn-nav:hover {
+      background: var(--glow);
+      box-shadow: 0 0 16px var(--glow);
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 100px 24px 80px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border: 1px solid #222;
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: blink 1.2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 .green { color: var(--accent); }
+    .hero h1 .blue  { color: var(--accent2); }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 14px 32px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 0 24px rgba(0,255,136,0.3);
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-secondary {
+      padding: 14px 32px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+
+    /* TERMINAL DEMO */
+    .terminal-wrap {
+      max-width: 720px;
+      margin: 64px auto 0;
+      border: 1px solid #222;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,255,136,0.07);
+    }
+
+    .terminal-bar {
+      background: #1a1a1a;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #222;
+    }
+
+    .t-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .t-dot.r { background: #FF5F56; }
+    .t-dot.y { background: #FFBD2E; }
+    .t-dot.g { background: #27C93F; }
+
+    .t-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: 8px;
+    }
+
+    .terminal-body {
+      background: #0A0A0A;
+      padding: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    .t-line { display: flex; gap: 10px; }
+    .t-prompt { color: var(--accent); }
+    .t-cmd    { color: var(--text); }
+    .t-output { color: var(--muted); padding-left: 20px; }
+    .t-user   { color: var(--accent2); }
+    .t-msg    { color: var(--text); }
+    .t-cursor {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: var(--accent);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    /* FEATURES */
+    .features {
+      max-width: 1000px;
+      margin: 100px auto;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 48px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      border-color: #333;
+      box-shadow: 0 0 30px rgba(0,255,136,0.05);
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* INSTALL */
+    .install {
+      max-width: 720px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+    }
+
+    .code-block {
+      background: #0A0A0A;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin-top: 24px;
+      position: relative;
+    }
+
+    .code-block .comment { color: var(--muted); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 60px 20px 40px; }
+      footer { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">ray<span>#</span>chad</div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="https://github.com/newssungoldentoday-dev/raychd" target="_blank">GitHub</a></li>
+    </ul>
+    <a href="https://github.com/newssungoldentoday-dev/raychd" class="btn-nav" target="_blank">$ clone</a>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">
+      <span class="dot"></span>
+      IRC · Open Source · Self-Hosted
+    </div>
+
+    <h1>
+      Chat like it's<br/>
+      <span class="green">1988</span> but feels like <span class="blue">2026</span>
+    </h1>
+
+    <p>Ray Chad is a lightweight, self-hosted IRC chat server. Fast, open, and running on your own machine. No cloud. No tracking. Just pure IRC.</p>
+
+    <div class="hero-btns">
+      <a href="#install" class="btn-primary">Get Started</a>
+      <a href="https://github.com/newssungoldentoday-dev/raychd" target="_blank" class="btn-secondary">View on GitHub →</a>
+    </div>
+
+    <div class="terminal-wrap">
+      <div class="terminal-bar">
+        <div class="t-dot r"></div>
+        <div class="t-dot y"></div>
+        <div class="t-dot g"></div>
+        <span class="t-title">raychd — irc session</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">raychd connect irc.raychad.local #general</span></div>
+        <div class="t-output">Connecting to irc.raychad.local:6667...</div>
+        <div class="t-output">Welcome to Ray Chad IRC!</div>
+        <div class="t-output">Joined #general (42 users)</div>
+        <div class="t-line" style="margin-top:8px">
+          <span class="t-user">&lt;alice&gt;</span>
+          <span class="t-msg">hey everyone 👋</span>
+        </div>
+        <div class="t-line">
+          <span class="t-user">&lt;bob&gt;</span>
+          <span class="t-msg">welcome to Ray Chad!</span>
+        </div>
+        <div class="t-line">
+          <span class="t-prompt">$</span>
+          <span class="t-cmd">/msg alice hey! this is awesome</span>
+        </div>
+        <div class="t-line"><span class="t-cursor"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <p class="section-label">// features</p>
+    <h2 class="section-title">Everything IRC. Nothing extra.</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Powered by InspIRCd</h3>
+        <p>Built on top of InspIRCd, one of the most reliable and modular IRC servers available.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🐳</div>
+        <h3>Docker Ready</h3>
+        <p>Comes with a Dockerfile and docker-compose.yml — spin up your IRC server in seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Self-Hosted</h3>
+        <p>Your server, your rules. No third-party cloud. Full control over your data and channels.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📜</div>
+        <h3>Open Source</h3>
+        <p>Licensed under Apache-2.0. Fork it, modify it, and make it your own.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖥️</div>
+        <h3>Shell Scripts Included</h3>
+        <p>Easy install with <code>pkg-install</code> and handy shortcuts via <code>raychd-shortcuts.sh</code>.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Minimal Footprint</h3>
+        <p>Lightweight and fast. Ray Chad doesn't bloat your server with unnecessary dependencies.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="install" id="install">
+    <p class="section-label">// quick start</p>
+    <h2 class="section-title">Up in 3 commands.</h2>
+
+    <div class="code-block">
+      <div class="comment"># Clone the repo</div>
+      <div>git clone https://github.com/newssungoldentoday-dev/raychd.git</div>
+      <br/>
+      <div class="comment"># Start with Docker</div>
+      <div>cd raychd && docker-compose up -d</div>
+      <br/>
+      <div class="comment"># Or install manually</div>
+      <div>bash pkg-install</div>
+    </div>
+  </section>
+
+  <footer>
+    <p>ray<span style="color:var(--muted)">#</span>chad — IRC Chat &copy; 2026 BlueBixt Developers</p>
+    <p>
+      <a href="https://github.com/newssungoldentoday-dev/raychd" target="_blank">GitHub</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/newssungoldentoday-dev/raychd/blob/main/LICENSE" target="_blank">Apache-2.0</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/newssungoldentoday-dev/raychd/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a>
+    </p>
+  </footer>
+
+</body>
+  </html>
+  
     
