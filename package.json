@@ -1,0 +1,38 @@
+{
+  "name": "raychd-forum",
+  "version": "0.1.0",
+  "description": "Threaded, self-hosted discussion forum — the async companion to Ray Chad IRC.",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "commonjs",
+  "author": "BlueBixt Developers",
+  "homepage": "https://newssungoldentoday-dev.github.io/raychd-forum/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/newssungoldentoday-dev/raychd-forum.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "bridge:enable": "node scripts/bridge.js --enable",
+    "bridge:disable": "node scripts/bridge.js --disable",
+    "test": "node --test",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "irc-framework": "^4.13.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.9.0"
+  }
+}
