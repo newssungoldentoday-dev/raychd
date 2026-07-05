@@ -8,11 +8,11 @@ set -e
 echo "=========================================="
 echo "  Ray Chad IRC Server - Installation"
 echo "=========================================="
-echo " Welcome to Ray Chad IRC Server Installation"
-echo " Supported Terminal: Termux, Linux (Debian, Ubuntu, CentOS, Fedora, Arch, Alpine), and More"
-echo " Report an Issue in https://github.com/newssungoldentoday-dev/raychd/"
-echo " Ray Chad is Developed By BlueBixt Ltd., or NewsSunGoldenToday BlueBixt Ltd.,"
-echo " Thank You For downloading!"
+echo "  Welcome to Ray Chad IRC Server Installation"
+echo "  Supported Terminal: Termux, Linux (Debian, Ubuntu, CentOS, Fedora, Arch, Alpine), and More"
+echo "  Report an Issue in https://github.com/newssungoldentoday-dev/raychd/"
+echo "  Ray Chad is Developed By BlueBixt Ltd., or NewsSunGoldenToday BlueBixt Ltd.,"
+echo "  Thank You For downloading!"
 echo ""
 
 # Color codes
