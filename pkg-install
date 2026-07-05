@@ -71,7 +71,7 @@ install_dependencies() {
     if [ "$ENV" == "termux" ]; then
         echo "Setting up Termux environment..."
         pkg update -y
-        pkg install -y build-essential git openssl autoconf automake openssl-dev pkg-config
+        pkg install -y build-essential git openssl autoconf automake pkg-config
         pkg install -y clang make
         
     elif [ "$ENV" == "macos" ]; then
