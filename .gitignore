@@ -28,6 +28,12 @@
 *.so.*
 *.dylib
 
+# Private Identify 
+*.private
+*.password 
+*.silent 
+*.ln
+
 # Executables
 *.exe
 *.out
