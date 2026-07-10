@@ -1,0 +1,255 @@
+#!/bin/bash
+# ============================================================================
+# Ray Chad — environment-install.sh
+# Environment Essential Installer
+# BlueBixt Developers © 2026
+# ============================================================================
+
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+BOLD='\033[1m'
+MUTED='\033[0;90m'
+RESET='\033[0m'
+
+ENVIRONMENTS=(
+  "ReFresh"
+  "ReOgu"
+  "LifeDer"
+  "Pandadock"
+  "Laver"
+  "Panda"
+  "Dacko"
+  "Labrs"
+  "EnviTorch"
+  "Luba Fire"
+  "Labera"
+  "Libna"
+  "Pahryso"
+  "Dexlavr"
+  "DevEnvi"
+)
+
+TOTAL=${#ENVIRONMENTS[@]}
+INSTALLED=0
+
+# ── Detect OS ──
+detect_os() {
+  if [ -n "$TERMUX_VERSION" ]; then OS="termux"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then OS="macos"
+  elif [[ "$OSTYPE" == "linux-gnu"* ]]; then OS="linux"
+  else OS="unknown"
+  fi
+}
+
+# ── Bouncing Ball Loader ──
+bounce_loader() {
+  local MESSAGE=$1
+  local DURATION=$2
+  local WIDTH=24
+  local POS=0
+  local DIR=1
+  local END=$(($(date +%s) + DURATION))
+
+  while [ $(date +%s) -lt $END ]; do
+    BAR=""
+    for ((i=0; i<WIDTH; i++)); do
+      if [ $i -eq $POS ]; then
+        BAR="${BAR}O"
+      else
+        BAR="${BAR}-"
+      fi
+    done
+    printf "\r  ${CYAN}[${BAR}]${RESET}  ${MESSAGE}"
+
+    POS=$((POS + DIR))
+    if [ $POS -ge $((WIDTH - 1)) ]; then DIR=-1; fi
+    if [ $POS -le 0 ]; then DIR=1; fi
+
+    sleep 0.07
+  done
+
+  # Done — show checkmark
+  DONE_BAR=""
+  for ((i=0; i<WIDTH; i++)); do DONE_BAR="${DONE_BAR}─"; done
+  printf "\r  ${GREEN}[${DONE_BAR}]${RESET}  ${GREEN}✔ ${MESSAGE}${RESET}\n"
+}
+
+# ── Install Single Environment ──
+install_env() {
+  local NAME=$1
+
+  case "$NAME" in
+    "ReFresh")
+      bounce_loader "Installing ReFresh — Cache Refresh..." 2
+      mkdir -p ~/.raychd/envs/refresh
+      echo -e "REFRESH_ENABLED=true\nREFRESH_INTERVAL=3600" > ~/.raychd/envs/refresh/.env
+      ;;
+    "ReOgu")
+      bounce_loader "Installing ReOgu — Output Guard..." 2
+      mkdir -p ~/.raychd/envs/reogu
+      echo -e "REOGU_ENABLED=true\nREOGU_LOG_LEVEL=info" > ~/.raychd/envs/reogu/.env
+      ;;
+    "LifeDer")
+      bounce_loader "Installing LifeDer — Lifecycle Manager..." 2
+      mkdir -p ~/.raychd/envs/lifeder
+      echo -e "LIFEDER_ENABLED=true\nLIFEDER_AUTO_RESTART=true" > ~/.raychd/envs/lifeder/.env
+      ;;
+    "Pandadock")
+      bounce_loader "Installing Pandadock — Container Dock..." 2
+      mkdir -p ~/.raychd/envs/pandadock
+      echo -e "PANDADOCK_ENABLED=true\nPANDADOCK_DOCKER_MODE=true" > ~/.raychd/envs/pandadock/.env
+      ;;
+    "Laver")
+      bounce_loader "Installing Laver — Layer Environment..." 2
+      mkdir -p ~/.raychd/envs/laver
+      echo -e "LAVER_ENABLED=true\nLAVER_STACK=base" > ~/.raychd/envs/laver/.env
+      ;;
+    "Panda")
+      bounce_loader "Installing Panda — Package Handler..." 2
+      mkdir -p ~/.raychd/envs/panda
+      echo -e "PANDA_ENABLED=true\nPANDA_AUTO_UPDATE=false" > ~/.raychd/envs/panda/.env
+      ;;
+    "Dacko")
+      bounce_loader "Installing Dacko — Daemon Controller..." 2
+      mkdir -p ~/.raychd/envs/dacko
+      echo -e "DACKO_ENABLED=true\nDACKO_DAEMON_MODE=true" > ~/.raychd/envs/dacko/.env
+      ;;
+    "Labrs")
+      bounce_loader "Installing Labrs — Lab Runtime Service..." 2
+      mkdir -p ~/.raychd/envs/labrs
+      echo -e "LABRS_ENABLED=true\nLABRS_RUNTIME=bash" > ~/.raychd/envs/labrs/.env
+      ;;
+    "EnviTorch")
+      bounce_loader "Installing EnviTorch — Environment Core..." 2
+      mkdir -p ~/.raychd/envs/envitorch
+      echo -e "ENVITORCH_ENABLED=true\nENVITORCH_CORE_VERSION=1.0.0" > ~/.raychd/envs/envitorch/.env
+      ;;
+    "Luba Fire")
+      bounce_loader "Installing Luba Fire — Firewall..." 2
+      mkdir -p ~/.raychd/envs/lubafire
+      echo -e "LUBAFIRE_ENABLED=true\nLUBAFIRE_FIREWALL=active\nLUBAFIRE_PORT=6667" > ~/.raychd/envs/lubafire/.env
+      ;;
+    "Labera")
+      bounce_loader "Installing Labera — Error Reporter..." 2
+      mkdir -p ~/.raychd/envs/labera
+      echo -e "LABERA_ENABLED=true\nLABERA_ERROR_LOG=~/.raychd/logs/errors.log" > ~/.raychd/envs/labera/.env
+      ;;
+    "Libna")
+      bounce_loader "Installing Libna — Library Navigator..." 2
+      mkdir -p ~/.raychd/envs/libna
+      echo -e "LIBNA_ENABLED=true\nLIBNA_LIB_PATH=~/.raychd/lib" > ~/.raychd/envs/libna/.env
+      ;;
+    "Pahryso")
+      bounce_loader "Installing Pahryso — Path Resolver..." 2
+      mkdir -p ~/.raychd/envs/pahryso
+      echo -e "PAHRYSO_ENABLED=true\nPAHRYSO_BASE_PATH=~/.raychd" > ~/.raychd/envs/pahryso/.env
+      ;;
+    "Dexlavr")
+      bounce_loader "Installing Dexlavr — Dev Extension Layer..." 2
+      mkdir -p ~/.raychd/envs/dexlavr
+      echo -e "DEXLAVR_ENABLED=true\nDEXLAVR_DEV_MODE=false" > ~/.raychd/envs/dexlavr/.env
+      ;;
+    "DevEnvi")
+      bounce_loader "Installing DevEnvi — Developer Environment..." 2
+      mkdir -p ~/.raychd/envs/devenvi
+      echo -e "DEVENVI_ENABLED=true\nDEVENVI_DEBUG=false\nDEVENVI_VERSION=1.0.0" > ~/.raychd/envs/devenvi/.env
+      ;;
+  esac
+
+  INSTALLED=$((INSTALLED + 1))
+}
+
+# ── Write Master .env ──
+write_master_env() {
+  mkdir -p ~/.raychd/envs
+  cat > ~/.raychd/envs/.env.master << 'ENVEOF'
+# Ray Chad — Master Environment Config
+# Auto-generated by environment-install.sh
+# BlueBixt Developers © 2026
+
+RAYCHD_VERSION=1.0.0
+RAYCHD_ENV=production
+REFRESH_ENABLED=true
+REOGU_ENABLED=true
+LIFEDER_ENABLED=true
+PANDADOCK_ENABLED=true
+LAVER_ENABLED=true
+PANDA_ENABLED=true
+DACKO_ENABLED=true
+LABRS_ENABLED=true
+ENVITORCH_ENABLED=true
+LUBAFIRE_ENABLED=true
+LABERA_ENABLED=true
+LIBNA_ENABLED=true
+PAHRYSO_ENABLED=true
+DEXLAVR_ENABLED=true
+DEVENVI_ENABLED=true
+IRC_PORT=6667
+IRC_TLS_PORT=6697
+IRC_HOST=raychad.ddns.net
+ENVEOF
+}
+
+# ── Write Log ──
+write_log() {
+  mkdir -p ~/.raychd/logs
+  LOG_FILE=~/.raychd/logs/environment-install.log
+  {
+    echo "Ray Chad Environment Install Log"
+    echo "Date: $(date)"
+    echo "OS: $OS"
+    echo "Total: $TOTAL | Installed: $INSTALLED"
+    echo ""
+    for ENV in "${ENVIRONMENTS[@]}"; do
+      echo "✔ $ENV — installed"
+    done
+  } > "$LOG_FILE"
+}
+
+# ── Main ──
+clear
+echo ""
+echo -e "${BOLD}${CYAN}  ============================================================${RESET}"
+echo -e "${BOLD}${CYAN}   Ray Chad — Environment Essential Installer${RESET}"
+echo -e "${BOLD}${CYAN}  ============================================================${RESET}"
+echo -e "  ${MUTED}BlueBixt Developers © 2026${RESET}"
+echo ""
+echo -e "  ${YELLOW}${TOTAL} environments will be installed:${RESET}"
+echo ""
+for ENV in "${ENVIRONMENTS[@]}"; do
+  echo -e "  ${MUTED}•${RESET} $ENV"
+done
+echo ""
+read -p "  Proceed with installation? [y/N]: " CONFIRM
+if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+  echo -e "\n  ${YELLOW}Installation cancelled.${RESET}\n"
+  exit 0
+fi
+
+echo ""
+detect_os
+echo -e "  ${CYAN}Detected OS:${RESET} $OS"
+echo ""
+
+for ENV in "${ENVIRONMENTS[@]}"; do
+  install_env "$ENV"
+done
+
+bounce_loader "Writing master environment config..." 1
+write_master_env
+
+bounce_loader "Saving install log..." 1
+write_log
+
+echo ""
+echo -e "${BOLD}${CYAN}  ============================================================${RESET}"
+echo -e "  ${GREEN}${BOLD}✔ All ${INSTALLED}/${TOTAL} environments installed!${RESET}"
+echo -e "${BOLD}${CYAN}  ============================================================${RESET}"
+echo ""
+echo -e "  ${CYAN}Environments:${RESET} ~/.raychd/envs/"
+echo -e "  ${CYAN}Logs:${RESET}         ~/.raychd/logs/"
+echo ""
+echo -e "  Run ${CYAN}bash terminal-bash/start.sh${RESET} to start Ray Chad. 🚀"
+echo ""
