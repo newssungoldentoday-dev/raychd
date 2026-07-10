@@ -1,5 +1,5 @@
-#raychd
-Ray Chad is a fun and easy to use IRC chat that allows users to connect and communicate with people from all around the world. It offers a variety of features and customizable options to enhance your chatting experience.
+**Ray Chad**
+**Ray Chad** is a fun and easy to use IRC chat that allows users to connect and communicate with people from all around the world. It offers a variety of features and customizable options to enhance your chatting experience.
 Getting Started:
 To start using Ray Chad, all you need is an internet connection and an IRC client. You can connect to the Ray Chad server by typing "/server irc.raychad.com" into your IRC client and joining the channel #raychad.
 Features:
@@ -19,3 +19,5 @@ Rules:
 4. No excessive use of caps lock: Using caps lock excessively is considered shouting and can be disruptive to other users.
 5. Stay on topic: Keep conversations in line with the designated channel topic.
 We hope you enjoy using Ray Chad and have a pleasant chatting experience! If you have any suggestions or feedback, please feel free to reach out to our team. Happy chatting!
+
+
