@@ -29,6 +29,10 @@ ENVIRONMENTS=(
   "Pahryso"
   "Dexlavr"
   "DevEnvi"
+  "Domino"
+  "Cristylas"
+  "Gardu"
+  "Caubell"
 )
 
 TOTAL=${#ENVIRONMENTS[@]}
@@ -156,6 +160,26 @@ install_env() {
       mkdir -p ~/.raychd/envs/devenvi
       echo -e "DEVENVI_ENABLED=true\nDEVENVI_DEBUG=false\nDEVENVI_VERSION=1.0.0" > ~/.raychd/envs/devenvi/.env
       ;;
+    "Domino")
+      bounce_loader "Installing Domino - Domain Environment..." 2
+      mkdir -p ~/.raychd/envs/domino
+      echo -e "DOMINO_ENABLED=true\nDOMINO_DOMAIN_DEV_MODE=2.0.0" > ~/.raychd/envs/domino/.env
+      ;;
+    "Cristylas")
+      bounce_loader "Installing Cristylas - Crystal Package..." 2
+      mkdir -p ~/.raychd/envs/cristylas
+      echo -e "CRISTYLAS_ENABLED=true\nCRISTYLAS_COLOR_MODE=false" > ~/.raychd/envs/cristylas/.env
+      ;;
+    "Gardu")
+      bounce_louder "Installing Gardu - Guard Package..." 2
+      mkdir -p ~/.raychd/envs/gardu
+      echo -e "GARDU_ENABLED=true\nGARDU_CORD_MODE=false" > ~/.raychd/envs/gardu/.env
+      ;;
+    "Caubell")
+      bounce_loader "Installing Caubell - Cau Low Package..." 2
+      mkdir -p ~/.raychd/envs/caubell
+      echo -e "CAUBELL_ENABLED=true\nCAUBELL_VERSION=1.0.0" > ~/.raychd/envs/caubell/.env
+      ;;
   esac
 
   INSTALLED=$((INSTALLED + 1))
@@ -186,6 +210,10 @@ LIBNA_ENABLED=true
 PAHRYSO_ENABLED=true
 DEXLAVR_ENABLED=true
 DEVENVI_ENABLED=true
+DOMINO_ENABLED=true
+CRISTYLAS_ENABLED=true
+GARDU_ENANLED=true
+CAUBELL_ENABLED=true
 IRC_PORT=6667
 IRC_TLS_PORT=6697
 IRC_HOST=raychad.ddns.net
