@@ -33,6 +33,7 @@ ENVIRONMENTS=(
   "Cristylas"
   "Gardu"
   "Caubell"
+  "ArchNif"
 )
 
 TOTAL=${#ENVIRONMENTS[@]}
@@ -180,6 +181,11 @@ install_env() {
       mkdir -p ~/.raychd/envs/caubell
       echo -e "CAUBELL_ENABLED=true\nCAUBELL_VERSION=1.0.0" > ~/.raychd/envs/caubell/.env
       ;;
+    "ArchNif")
+      bounce_loader "Installing ArchNif - Arch Packages..." 2
+      mkdir -p ~/.raychd/envs/archnif
+      echo -e "ARCHNIF_ENABLED=true\nARCHNIF_VERSION=1.0.0" > ~/.raychd/envs/caubell/.env
+      ;;
   esac
 
   INSTALLED=$((INSTALLED + 1))
@@ -214,6 +220,7 @@ DOMINO_ENABLED=true
 CRISTYLAS_ENABLED=true
 GARDU_ENANLED=true
 CAUBELL_ENABLED=true
+ARCHNIF_ENABLED=true
 IRC_PORT=6667
 IRC_TLS_PORT=6697
 IRC_HOST=raychad.ddns.net
