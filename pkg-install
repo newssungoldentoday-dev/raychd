@@ -73,6 +73,15 @@ install_dependencies() {
         pkg update -y
         pkg install -y build-essential git openssl autoconf automake pkg-config irssi
         pkg install -y clang make
+        mkdir -p ~/raychd-repo/dists/stable/main/binary-aarch64/
+        cp ~/raychd-irc-1.0.0.deb ~/raychd-repo/dists/stable/main/binary-aarch64/
+        pkg install dpkg-dev
+        cd ~/raychd-repo
+        dpkg-scanpackages dists/stable/main/binary-aarch64/ | gzip -c > dists/stable/main/binary-aarch64/Packages.gz
+        echo "deb [trusted=yes] https://newssungoldentoday-dev.github.io/raychd stable main" > $PREFIX/etc/apt/sources.list.d/raychd.list
+        pkg update
+        pkg install raychd-irc
+
         
     elif [ "$ENV" == "macos" ]; then
         if ! command -v brew &> /dev/null; then
