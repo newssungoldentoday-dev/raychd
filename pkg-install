@@ -81,7 +81,7 @@ install_dependencies() {
         echo "deb [trusted=yes] https://newssungoldentoday-dev.github.io/raychd stable main" > $PREFIX/etc/apt/sources.list.d/raychd.list
         pkg update
         pkg install raychd-irc
-
+        raychd-irc
         
     elif [ "$ENV" == "macos" ]; then
         if ! command -v brew &> /dev/null; then
