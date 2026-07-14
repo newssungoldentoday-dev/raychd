@@ -1,0 +1,122 @@
+#!/bin/bash
+# ============================================================================
+# Ray Chad — what-is-raychd.sh
+# Explains what Ray Chad is
+# BlueBixt Developers © 2026
+# ============================================================================
+
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+MAGENTA='\033[0;35m'
+BOLD='\033[1m'
+MUTED='\033[0;90m'
+RESET='\033[0m'
+
+clear
+echo ""
+echo -e "${BOLD}${CYAN}  ╔══════════════════════════════════════════════════════════╗${RESET}"
+echo -e "${BOLD}${CYAN}  ║           What is Ray Chad?                              ║${RESET}"
+echo -e "${BOLD}${CYAN}  ║           BlueBixt Developers © 2026                    ║${RESET}"
+echo -e "${BOLD}${CYAN}  ╚══════════════════════════════════════════════════════════╝${RESET}"
+echo ""
+
+sleep 0.5
+
+# ── What is Ray Chad ──
+echo -e "${BOLD}${GREEN}  📡 Ray Chad${RESET}"
+echo ""
+echo -e "  Ray Chad is a free, open-source, self-hosted"
+echo -e "  IRC (Internet Relay Chat) application."
+echo -e "  Built and maintained by ${BOLD}BlueBixt Ltd${RESET},"
+echo -e "  located at ${CYAN}Teachers Camp, Baguio City, Philippines${RESET}."
+echo ""
+
+sleep 0.5
+
+# ── What is IRC ──
+echo -e "${BOLD}${GREEN}  💬 What is IRC?${RESET}"
+echo ""
+echo -e "  IRC stands for ${BOLD}Internet Relay Chat${RESET}."
+echo -e "  It is one of the oldest chat protocols in the world,"
+echo -e "  created in ${CYAN}1988${RESET} by Jarkko Oikarinen."
+echo -e "  IRC allows people to chat in real-time"
+echo -e "  through channels (like #general, #support)"
+echo -e "  or private messages."
+echo ""
+
+sleep 0.5
+
+# ── What makes Ray Chad special ──
+echo -e "${BOLD}${GREEN}  ⭐ What makes Ray Chad special?${RESET}"
+echo ""
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}Self-hosted${RESET}     — You run it on your own machine"
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}Open Source${RESET}     — Free to use, modify and share"
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}No Cloud${RESET}        — Your data stays with you"
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}No Tracking${RESET}     — No ads, no spying"
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}Cross-platform${RESET}  — Works on Linux, macOS, Termux"
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}Docker Ready${RESET}    — Easy containerized deployment"
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}SSL/TLS${RESET}         — Secure encrypted connections"
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}18 Environments${RESET} — Modular environment system"
+echo -e "  ${CYAN}✔${RESET}  ${BOLD}50+ Languages${RESET}   — Dictionary support worldwide"
+echo ""
+
+sleep 0.5
+
+# ── Powered by ──
+echo -e "${BOLD}${GREEN}  ⚙️  Powered by${RESET}"
+echo ""
+echo -e "  ${BOLD}InspIRCd${RESET} — A modular, high-performance IRC server"
+echo -e "  ${MUTED}One of the most reliable IRC server software available.${RESET}"
+echo ""
+
+sleep 0.5
+
+# ── Who made it ──
+echo -e "${BOLD}${GREEN}  👥 Who made Ray Chad?${RESET}"
+echo ""
+echo -e "  ${BOLD}BlueBixt Ltd${RESET}"
+echo -e "  ${CYAN}Teachers Camp, Baguio City, Benguet, Philippines${RESET}"
+echo -e "  GitHub: ${CYAN}https://github.com/newssungoldentoday-dev${RESET}"
+echo -e "  License: ${CYAN}Apache-2.0${RESET}"
+echo ""
+
+sleep 0.5
+
+# ── How to use ──
+echo -e "${BOLD}${GREEN}  🚀 How to get started?${RESET}"
+echo ""
+echo -e "  ${CYAN}1.${RESET} Clone the repo:"
+echo -e "     ${MUTED}git clone https://github.com/newssungoldentoday-dev/raychd.git${RESET}"
+echo ""
+echo -e "  ${CYAN}2.${RESET} Install Ray Chad:"
+echo -e "     ${MUTED}bash independence-install.sh${RESET}"
+echo ""
+echo -e "  ${CYAN}3.${RESET} Install environments:"
+echo -e "     ${MUTED}bash environment-install.sh${RESET}"
+echo ""
+echo -e "  ${CYAN}4.${RESET} Start the server:"
+echo -e "     ${MUTED}bash terminal-bash/start.sh${RESET}"
+echo ""
+echo -e "  ${CYAN}5.${RESET} Connect to IRC:"
+echo -e "     ${MUTED}bash terminal-bash/connect.sh${RESET}"
+echo ""
+
+sleep 0.5
+
+# ── Links ──
+echo -e "${BOLD}${GREEN}  🔗 Links${RESET}"
+echo ""
+echo -e "  ${CYAN}GitHub:${RESET}   https://github.com/newssungoldentoday-dev/raychd"
+echo -e "  ${CYAN}Website:${RESET}  https://newssungoldentoday-dev.github.io/raychd"
+echo -e "  ${CYAN}IRC:${RESET}      raychad.ddns.net:6667"
+echo -e "  ${CYAN}License:${RESET}  Apache-2.0"
+echo ""
+
+# ── Footer ──
+echo -e "${BOLD}${CYAN}  ============================================================${RESET}"
+echo -e "  ${MUTED}Ray Chad — IRC Chat · BlueBixt Developers © 2026${RESET}"
+echo -e "${BOLD}${CYAN}  ============================================================${RESET}"
+echo ""
+p
