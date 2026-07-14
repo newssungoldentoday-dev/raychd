@@ -6,7 +6,7 @@ Created Time: 7:20
 # Ray Chad — Sponsorship
 # Ray Chad — Pagsuporta
 
-**Version / Bersyon:** 1.0.0
+**Version / Bersyon:** 2.0.0
 **Maintained by / Pinapanatili ng:** BlueBixt Ltd — Teachers Camp, Baguio City, Philippines
 
 ---
