@@ -53,7 +53,7 @@ For international sponsors:
 
 #### 4. Open Collective
 Support us via Open Collective:
-👉 https://opencollective.com/raychad
+👉 https://opencollective.com/bluebixtcoli
 
 ---
 
@@ -144,7 +144,7 @@ Para sa mga internasyonal na sponsor:
 
 #### 4. Open Collective
 Suportahan kami sa pamamagitan ng Open Collective:
-👉 https://opencollective.com/raychad
+👉 https://opencollective.com/bluebixtcoli
 
 ---
 
